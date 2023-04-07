@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<style>
+    table,th,tr,td{
+        border: 1px solid black
+    }
+</style>
+<body>
+
+    <h1>Customers List</h1>
+    {% comment %} {% for customer in customers %}
+      <h2>{{ customer.first_name }} {{ customer.last_name }}</h2>
+      <p>Email Address: {{ customer.email_address }}</p>
+      <p>Phone Number: {{ customer.phone_number }}</p>
+      {% if customer.customer.exists %}
+        <h3>Order History:</h3>
+        <ul>
+        {% for order in customer.customer.all %}
+          <h1>Order Date: </h1>
+          <li> {{ order.order_date }}</li>
+          <h1>Total Amount: </h1>
+          <li> {{ order.total_Amount }}</li>
+          <ul>
+          {% for item in order.item.all %}
+            <li>{{ item.product.product_name }} - {{ item.quantity }} x {{ item.price }}</li>
+            <h1>description:</h1>
+            <h4>{{item.product.description}}</h4>
+            <hr>
+          {% endfor %}
+          </ul>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>No orders found for this customer.</p>
+      {% endif %}
+    {% endfor %} {% endcomment %}
+
+    <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Orders</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+              <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+              <td>{{ customer.email_address }}</td>
+              <td>{{ customer.phone_number }}</td>
+              <td>
+                <ul>
+                    {% for order in customer.customer.all %}
+                      <li>
+                        <p>Order Date: {{ order.order_date }}</p>
+                        <p>Total Amount: {{ order.total_Amount }}</p>
+                        <ul>
+                          {% for item in order.item.all %}
+                            <li>
+                              <p>Product Name: {{ item.product.product_name }}</p>
+                              <p>Category: {{ item.product.category }}</p>
+                              <p>Description: {{ item.product.description }}</p>
+                              <p>Price: {{ item.price }}</p>
+                              <p>Quantity: {{ item.quantity }}</p>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+</body>
+</html>
